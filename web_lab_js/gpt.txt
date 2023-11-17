@@ -1,0 +1,67 @@
+//item_module
+const Sequelize = require("sequelize");
+const db = require("./db.js");
+
+const Plane = db.define("planes", {
+  id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  name: {
+    type: Sequelize.STRING(30), // VARCHAR(30)
+    allowNull: false,
+  },
+  tank_volume: {
+    type: Sequelize.INTEGER.UNSIGNED, // INT UNSIGNED
+    allowNull: false,
+  },
+  num_of_seats: {
+    type: Sequelize.INTEGER.UNSIGNED, // INT UNSIGNED
+    allowNull: false,
+  },
+});
+
+Plane.sync().then(() => {
+  console.log("Drop and re-sync db.");
+});
+
+module.exports = Plane;
+
+//db
+module.exports = new Sequelize(dbConfig.DATABASE, dbConfig.USER, dbConfig.PASSWORD, {
+  host: dbConfig.HOST,
+  dialect: dbConfig.dialect,
+  pool: {
+	max: dbConfig.pool.max,
+	min: dbConfig.pool.min,
+	acquire: dbConfig.acquire,
+	idle: dbConfig.idle
+  }
+});
+
+//db_config
+module.exports = {
+    HOST: "localhost",
+    USER: "woodoo",
+    PASSWORD: "951321Zxs_",
+    DATABASE: "planes",
+    dialect: "mysql",
+    pool: {
+         max: 5,
+         min: 0,
+         acquire: 30000,
+         idle: 10000
+    }
+};
+
+//table from db
+CREATE TABLE IF NOT EXISTS `planes` (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL,
+  tank_volume INT UNSIGNED  NOT NULL,
+  num_of_seats INT UNSIGNED  NOT NULL,
+  PRIMARY KEY (id)
+);
+
